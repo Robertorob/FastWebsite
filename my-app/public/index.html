@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Website robertorob.ru is ready. The content is to be added</title>
+  <title>Robertorob Website</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <noscript>
@@ -113,8 +113,8 @@
 </head>
 <body>
   <div class="central-content">
-    <div class="big-text caption">Hello from Robertorob!</div>
-    <div class="small-text caption">Website robertorob.ru is ready. The content is to be added.</div>
+    <div class="big-text caption">Hello from Robertorob website!</div>
+    <div class="small-text caption">You are very welcome here, my dear friend!</div>
 
     <div class="login-form">
       <form onsubmit="onSubmit(event)">
@@ -130,10 +130,10 @@
           </div>
           <div class="clearfix">
               <label class="float-left form-check-label"><input type="checkbox"> Remember me</label>
-              <a href="#" class="float-right">Forgot Password?</a>
+              <a href="#" class="float-right" onclick="notImplemented(event)">Forgot Password?</a>
           </div>        
       </form>
-      <p class="text-center"><a href="#">Create an Account</a></p>
+      <p class="text-center"><a href="#" onclick="notImplemented(event)">Create an Account</a></p>
   </div>
 
   </div>
@@ -162,6 +162,11 @@
       link.href = cssLink;
       link.type = 'text/css';
       document.getElementsByTagName('head')[0].appendChild(link);
+    }
+
+    function notImplemented(event) {
+      window.alert('Not implemented');
+      event.preventDefault();
     }
   </script>
 </body>
