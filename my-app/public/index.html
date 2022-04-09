@@ -118,6 +118,7 @@
     }
     .error-dialog {
       color: red;
+      min-width: 200px;
     }
   </style>
 </head>
@@ -130,10 +131,10 @@
       <form id="loginForm" name="loginForm" onsubmit="onSubmit(event)">
           <h2 class="text-center">Log in</h2>       
           <div class="form-group">
-              <input name="UserName" type="text" class="form-control" placeholder="Username" required="required">
+              <input name="UserName" type="text" class="form-control" placeholder="Username" required="required" value="robertorob@mail.ru">
           </div>
           <div class="form-group">
-              <input name="Password" type="password" class="form-control" placeholder="Password" required="required">
+              <input name="Password" type="password" class="form-control" placeholder="Password" required="required" value="mekashron">
           </div>
           <div class="form-group">
               <button type="submit" class="btn btn-primary btn-block">Log in</button>
@@ -152,10 +153,25 @@
   </div>
 
   <div id="successDialog" title="Success" style="display:none;">
-    <p>Text of the dialog asdfsadf asdfasdfasdf asdfsadfasdf</p>
+    <form>
+      <fieldset disabled>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" id="email" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="mobile">Mobile</label>
+          <input type="text" id="mobile" class="form-control">
+        </div>
+      </fieldset>
+    </form>
   </div>
   <div id="errorDialog" title="Error" style="display:none;">
-    <p>Text of the dialog asdfsadf asdfasdfasdf asdfsadfasdf</p>
+    <p>User not found</p>
   </div>
 </body>
 
@@ -198,6 +214,7 @@
         autoOpen: false,
         draggable: true,
         modal: true,
+        width: 'auto',
       }
       $(id).dialog({
         ...defaultOptions, 
@@ -227,7 +244,10 @@
       const deserializedData = JSON.parse(data);
       const personData = JSON.parse(deserializedData.ret);
       if (personData.ResultCode !== -1) {
-        $(successDialogSelector).dialog('open');
+        $(successDialogSelector).dialog('open');debugger;
+        $('#name').val(`${personData.FirstName} ${personData.LastName}`);
+        $('#email').val(`${personData.Email}`);
+        $('#mobile').val(`${personData.Mobile}`);
       }
       if (personData.ResultCode === -1) {
         $(errorDialogSelector).dialog('open');
