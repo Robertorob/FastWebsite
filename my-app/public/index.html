@@ -160,24 +160,12 @@
 </body>
 
   <script type="text/javascript" defer>
-    $( "#successDialog" ).dialog({
-      autoOpen: false,
-      draggable: true,
-      modal: true,
-      classes: {
-        'ui-dialog-title' : 'success-dialog',
-        'ui-dialog-content' : 'success-dialog'
-      }
-    });
-    $( "#errorDialog" ).dialog({
-      autoOpen: false,
-      draggable: true,
-      modal: true,
-      classes: {
-        'ui-dialog-title' : 'error-dialog',
-        'ui-dialog-content' : 'error-dialog'
-      }
-    });
+    const successDialogSelector = '#successDialog';
+    const errorDialogSelector = '#errorDialog';
+    const loginAction = 'http://isapi.mekashron.com/soapclient/soapclient.php?URL=http://isapi.icu-tech.com/icutech-test.dll/wsdl/IICUTech';
+
+    initDialog(successDialogSelector, {classes: getClassesForDialog('success-dialog')});
+    initDialog(errorDialogSelector, {classes: getClassesForDialog('error-dialog')});
 
     const cssLinks = [
       'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css', 
@@ -189,24 +177,7 @@
 
     function onSubmit(event) {
       event.preventDefault();
-
-      $.post(
-        'http://isapi.mekashron.com/soapclient/soapclient.php?URL=http://isapi.icu-tech.com/icutech-test.dll/wsdl/IICUTech', 
-        {
-          func: 'Login', 
-          params: $('#loginForm').serialize()
-        }, 
-        (data,status,xhr) => {
-          const deserializedData = JSON.parse(data);
-          const personData = JSON.parse(deserializedData.ret);
-          if (personData.ResultCode !== -1) {
-            $("#successDialog").dialog('open');
-          }
-          if (personData.ResultCode === -1) {
-            $("#errorDialog").dialog('open');
-          }
-        }
-      )
+      sendLoginPostRequest();
     }
 
     function createLinkElement(cssLink) {
@@ -221,6 +192,47 @@
       event.preventDefault();
       window.alert('Not implemented');
     }
-  </script>
 
+    function initDialog(id, options) {
+      const defaultOptions = {
+        autoOpen: false,
+        draggable: true,
+        modal: true,
+      }
+      $(id).dialog({
+        ...defaultOptions, 
+        ...options
+      });
+    }
+
+    function getClassesForDialog(className) {
+      return {
+          'ui-dialog-title' : className,
+          'ui-dialog-content' : className,
+        }
+    }
+
+    function sendLoginPostRequest() {
+      $.post(
+        loginAction, 
+        {
+          func: 'Login', 
+          params: $('#loginForm').serialize()
+        }, 
+        successCallback
+      );
+    }
+
+    function successCallback(data,status, xhr) {
+      const deserializedData = JSON.parse(data);
+      const personData = JSON.parse(deserializedData.ret);
+      if (personData.ResultCode !== -1) {
+        $(successDialogSelector).dialog('open');
+      }
+      if (personData.ResultCode === -1) {
+        $(errorDialogSelector).dialog('open');
+      }
+    }
+
+  </script>
 </html>
